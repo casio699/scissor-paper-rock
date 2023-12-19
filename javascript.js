@@ -1,37 +1,87 @@
- var compchoice="middlefinger";
- var playerchoice="middlefinger";
- var playerscore=0;
- var computerscore=0;
- var i=1;
+ //variable declarations...
+ let compchoice="middlefinger";
+ let playerchoice="middlefinger";
+ let playerscore=0;
+ let compscore=0;
+ let winner="no one wins ERROR!"
+ 
 
- for(i=1;i<=5;i++){
-    console.log("round "+ i.toString() +" of 5")
-    getcomputerchoice();
-    getplayerchoice();
-    console.log("computer plays: "+ compchoice);
-    console.log("player plays: "+ playerchoice);
-    whowins();
-    console.log("player score: "+playerscore.toString()+" computer score: "+computerscore.toString()) 
+ const result = document.getElementById("result"); //fetch element
+ //buttons...
+
+
+
+
+ const scissorsBtn = document.getElementById("scissorsBtn");
+ scissorsBtn.addEventListener("click", () => {
+   console.log("Player plays: Scissors");
+   playerchoice = "scissors";
+   checkscoreandplay();
+ });
+ 
+ const paperBtn = document.getElementById("paperBtn");
+ paperBtn.addEventListener("click", () => {
+   console.log("Player plays: Paper");
+   playerchoice = "paper";
+   checkscoreandplay();
+ });
+ 
+ const rockBtn = document.getElementById("rockBtn");
+ rockBtn.addEventListener("click", () => {
+   console.log("Player plays: Rock");
+   playerchoice = "rock";
+   checkscoreandplay();
+ });
+ 
+ 
+
+
+ // functions...
+function reset(){
+    playerscore = 0;
+    compscore = 0;
+    result.textContent = " "; // Clear the result message
+    updateResult();
+
+}
+
+ function checkscoreandplay(){
+    if( playerscore<5 && compscore<5 ) {
+        playRound();}
+   else if( playerscore >= 5 || compscore >= 5 ){
+    
+        if(playerscore>compscore){
+           alert("player wins!");
+        }
+        else if(playerscore<compscore){
+            alert("computer wins!")
+        }
+        reset();
+    }
+    else{alert("problem!")}
  }
 
 
+function playRound(){
+    getComputerChoice();
+    whoWins();
+    updateResult();
+}
 
 
 
-
-
- function getcomputerchoice(){
+ function getComputerChoice(){
     var nb=Math.random()*10/3;
     if (nb<=1){
-        
+        console.log("computer chooses: Rock")
         return compchoice="rock"
     }
     else if (nb<=2&&nb>1){
-       
+        console.log("computer chooses: Paper")
         return compchoice="paper"
     }
     else if (nb<=3&&nb>2){
-        
+        console.log("computer chooses: Scissors")
         return compchoice="scissors"
     }
     else{
@@ -40,42 +90,36 @@
 }
 
 
-
-
-function getplayerchoice(){
-    playerchoice=prompt("type p for paper s for scissors or r for rocks!");
-    if (playerchoice.toLowerCase()==="p"){
-        return playerchoice="paper"
-    }
-    else if (playerchoice.toLowerCase()==="r"){
-        return playerchoice="rock"
-    }
-    else if (playerchoice.toLowerCase()==="s"){
-        return playerchoice="scissors"
-    }
-    else {
-        console.log("wrong input or error in player choice algorithm")
-    }
-
-}
-
-
-
-function whowins(){
-    if(compchoice==="scissors"&&playerchoice==="paper"||compchoice==="rock"&&playerchoice==="scissors"||compchoice==="paper"&&playerchoice==="rock"){
+function whoWins(){
+    if( compchoice==="scissors"&&playerchoice==="paper"||
+        compchoice==="rock"&&playerchoice==="scissors"||
+        compchoice==="paper"&&playerchoice==="rock"){
         
-        console.log("the computer wins!");
-        return computerscore++;
+       winner="the computer wins!";
+        return compscore++;
     }
-    else if (compchoice==="rock"&&playerchoice==="paper"||compchoice==="paper"&&playerchoice==="scissors"||compchoice==="scissors"&&playerchoice==="rock"){
+    else if (compchoice==="rock"&&playerchoice==="paper"||
+            compchoice==="paper"&&playerchoice==="scissors"||
+            compchoice==="scissors"&&playerchoice==="rock"){
         
-        console.log("player wins!");
+        winner="player wins!";
         return playerscore++;
     }
+    else if(compchoice===playerchoice){
+       winner="it's a tie!"  
+    }
     else{
-        console.log("it's a tie! or something is wrong XO")
+        winner="Something's Wrong Ma Negga!!!"
     }
 }
-
-
+function updateResult() {
+   console.log("Updating result...");
+   result.innerHTML = `
+     <p>Player plays: ${playerchoice}</p>
+     <p>Computer plays: ${compchoice}</p>
+     <p>${winner}</p>
+     <p>Player score: ${playerscore}</p>
+     <p>Computer score: ${compscore}</p>
+   `;
+ }
 
